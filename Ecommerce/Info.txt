@@ -1,0 +1,46 @@
+﻿Monolithic Uygulamanın Dezavantajları:
+
+1. Scalability:
+Monolithic uygulamaların büyümesi zordur. Uygulama büyüdükçe, uygulamanın her bir parçasını yeniden başlatmak gerekebilir. Bu da uygulamanın genel performansını düşürebilir.
+ - Sadece belirli bir alana yük binse bile tüm uygulama yeniden ölçeklenmeli. Bu da gereksiz kaynak kullanımına sebep olabilir.
+
+2. Teknoloji Bağımlılığı:
+   Monolithic uygulamalar, tek bir teknoloji yığınına bağlıdır. Sonradan bir kısmı Python ile geliştirmek imkansız olacaktır.
+
+3. Deployment riskleri:
+   Küçük bir değişiklik bile tüm uygulamanın yeniden deploy edilmesini gerektirebilir. Bu da uygulamanın downtime'ına sebep olabilir.
+
+4. Yavaş geliştirme süreci:
+   Monolithic uygulamaların büyümesi zordur. Bu da yeni özellikler eklemeyi zorlaştırabilir.
+   - 100+ yazılımcı aynı codebase üzerinde çalışıyor.
+   - Codebase büyük olduğu için, ekibe yeni katılan bir yazılımcı, kodu anlamakta zorlanabilir.
+   - Değişiklikler conflict durumlarına sebep olabilir.
+
+5. Exception Handling:
+   Monolithic uygulamalarda bir hata oluştuğunda, tüm uygulama etkilenebilir. Bu da uygulamanın genel performansını düşürebilir.
+
+
+
+-- Microservices yapısının dezavantajları:
+1. Distributed computing zorlukları:
+   * Servisler arası iletişimde network latency sorunları olabilir.
+   * Her servis çalışsa bile, aralarındaki iletişimde sorunlar olabilir.
+   * Dağıtık transaction yönetimi çok karmaşık olabilir.
+
+2. Operational Complexity:
+   * Onlarca servisin deployment ve yönetimi.
+   * Her servisin CI/CD pipeline'ı olmalı.
+   * Uygulama ayağa kalkarken, Container Orchestration karmaşıklığı
+
+3. Debugging Zorluğu:
+   * Veriler arası senkronizasyon sorunları
+   * Merkezi Log yönetimi olmadığı için, logları toplamak ve analiz etmek zor olabilir.
+   * End-to-end testlerin yazılması çok zor.
+
+4. Veri Tutarlılığı:
+   * Her servisin ayrı db'si olmalı!
+   * Veriler arası tutarlılık olmak zorunda!
+   * Eventual consistency modelini belirlemek gerekir
+
+5. Maaliyet:
+   
