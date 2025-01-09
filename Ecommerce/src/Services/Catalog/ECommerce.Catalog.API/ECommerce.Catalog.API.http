@@ -1,6 +1,13 @@
-@ECommerce.Catalog.API_HostAddress = http://localhost:5237
+@ECommerce.Catalog.API_HostAddress = https://localhost:7203
 
-GET {{ECommerce.Catalog.API_HostAddress}}/weatherforecast/
-Accept: application/json
+###
+
+GET {{ECommerce.Catalog.API_HostAddress}}/products
+
+###
+
+@productId=3f95ca6a-fa07-4251-92d9-0cdb70fd9172
+@discount=0.10
+PUT {{ECommerce.Catalog.API_HostAddress}}/products/{id}/discount/{{discount}}?productId={{productId}}
 
 ###

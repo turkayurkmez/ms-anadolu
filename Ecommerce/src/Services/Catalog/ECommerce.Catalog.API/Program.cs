@@ -1,3 +1,4 @@
+using ECommerce.Catalog.API;
 using ECommerce.Catalog.Application.Contracts;
 using ECommerce.Catalog.Application.Features.Products.Commands.DiscountPrice;
 using ECommerce.Catalog.Infrastructure.Extensions;
@@ -25,8 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
+await DatabaseInitializer.CreateAndSeedDatabaseAsync(app);
+app.UseHttpsRedirection();
+app.UseProductsEndPoints();
 
 
 app.Run();
