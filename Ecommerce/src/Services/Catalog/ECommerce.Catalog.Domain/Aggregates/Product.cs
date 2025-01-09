@@ -54,6 +54,7 @@ namespace ECommerce.Catalog.Domain.Aggregates
             //Burada fiyatı güncelleyeceğiz ve bir domain event ekleyeceğiz.
             var oldPrice = Price;
             Price  = Price * (1 - discountRate);
+            //Dinleyen herkese söyle: "Benim fiyatım indirildi."
             AddDomainEvent(new ProductDiscountedDomainEvent(Id, oldPrice, Price));
 
         }

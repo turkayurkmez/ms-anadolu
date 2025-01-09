@@ -20,10 +20,6 @@ namespace ECommerce.Catalog.Infrastructure.Persistence
             _mediator = mediator;
         }
 
-
-
-
-
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 
@@ -51,8 +47,8 @@ namespace ECommerce.Catalog.Infrastructure.Persistence
 
             var categories = new Category[]
             {
-                new Category("Elektronik"),
-                new Category("Kırtasiye"),
+                new Category("Elektronik"){ Id =1},
+                new Category("Kırtasiye"){ Id =2},
                 
             };
 

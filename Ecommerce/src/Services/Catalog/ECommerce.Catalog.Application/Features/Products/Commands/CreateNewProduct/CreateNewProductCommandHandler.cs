@@ -21,13 +21,15 @@ namespace ECommerce.Catalog.Application.Features.Products.Commands.CreateNewProd
 
         public async Task<Guid> Handle(CreateNewProductCommandRequest request, CancellationToken cancellationToken)
         {
+
+            //db işlemleri yaılıyor:
             var product = new Product(request.Name, request.Description, request.Price, request.Stock, request.CategoryId, request.ImageUrl);
 
             await _productRepository.AddAsync(product);
 
             return product.Id;
 
-            //burada db işlemleri yapılacak..
+         
 
         }
     }
