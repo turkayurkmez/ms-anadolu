@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option csharp_namespace = "ECommerce.Basket.API";
+
+package basket;
+
+service BasketService{
+  rpc GetBasket (GetBasketRequest) returns (CustomerBasket);
+  rpc UpdateBasket (CustomerBasket) returns (CustomerBasket);
+  rpc DeleteBasket(DeleteBasketRequest) returns (DeleteBasketResponse);
+  rpc AddItemToBasket(AddItemToBasketRequest) returns (CustomerBasket);
+  
+}
+
+message GetBasketRequest {
+  string buyerId = 1;
+}
+
+message DeleteBasketRequest {
+  string buyerId = 1;
+}
+
+message DeleteBasketResponse {
+  bool success = 1;
+}
+
+message AddItemToBasketRequest{
+	string buyerId=1;
+	BasketItem item=2;
+}
+
+message CustomerBasket{
+	string buyerId=1;
+	repeated BasketItem items=2;
+}
+
+
+
+message BasketItem{
+	string productId=1;
+	string productName=2;
+	int32 quantity=3;
+	double price=4;
+	string pictureUrl=5;
+}
+

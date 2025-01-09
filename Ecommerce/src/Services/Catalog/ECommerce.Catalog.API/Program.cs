@@ -2,9 +2,13 @@ using ECommerce.Catalog.API;
 using ECommerce.Catalog.Application.Contracts;
 using ECommerce.Catalog.Application.Features.Products.Commands.DiscountPrice;
 using ECommerce.Catalog.Infrastructure.Extensions;
+
 using ECommerce.Catalog.Infrastructure.Persistence;
 using ECommerce.Catalog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
+using ECommerce.EventBus;
+using MassTransit.Transports.Fabric;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,23 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+
+builder.Services.AddMassTransit(configurator =>
+{
+    configurator.UsingRabbitMq((context, config) =>
+    {
+        config.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        config.Publish<ProductPriceDiscountedEvent>(x =>
+           x.ExchangeType = "fanout"
+        );
+
+    });
+});
 
 var app = builder.Build();
 
