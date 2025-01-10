@@ -1,0 +1,24 @@
+﻿
+
+Olay analizi nasıl yapılır?
+ 1. Happy Path (Herşey yolunda :) )
+ 2. Olumsuz Senaryolar (Hata durumları)
+
+ Happy Path:
+ 1. Sipariş Oluşturuldu olayı tetiklenir.
+ 2. Stock servisi bu olayı dinler ve stok denetimini yapar.
+ 3. Stok uygun olayı fırlar.
+ 4. Payment servisi, stok uygun olayını dinler ve ödeme işlemini yapar.
+ 5. Ödeme başarılı olayı fırlar. 
+ 6. Shipping servisi, ödeme başarılı olayını dinler ve kargo işlemini yapar.
+ 7. Kargo başarılı olayı fırlar.
+ 8. Sipariş servisi, kargo başarılı olayını dinler ve sipariş durumunu TAMAMLANDI olarak günceller.
+
+ Olumsuz Senaryolar:
+ 1. Sipariş Oluşturuldu olayı tetiklenir.
+ 2. Stock servisi bu olayı dinler ve stok denetimini yapar.
+ 3. Stok uygun değil olayı fırlar.
+ 4. Sipariş servisi, stok uygun değil olayını dinler ve sipariş durumunu HATA olarak günceller.
+ 5. Payment servisi, ödeme işlemini yapmaz ve ödeme başarısız olayını fırlatır.
+ 6. Sipariş servisi, ödeme başarısız olayını dinler ve sipariş durumunu HATA olarak günceller.
+

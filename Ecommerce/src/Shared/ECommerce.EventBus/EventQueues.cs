@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace ECommerce.EventBus
 {
-    public record ProductPriceDiscountedEvent(Guid ProductId, decimal OldPrice, decimal NewPrice) : IntegrationEvent;
-
- 
-
-
-
-
+    public  class EventQueues
+    {
+        public const string OrderPriceDiscountQueue = "order-price-discount-event";
+    }
 }

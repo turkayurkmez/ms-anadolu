@@ -1,4 +1,4 @@
-using ECommerce.Catalog.API;
+﻿using ECommerce.Catalog.API;
 using ECommerce.Catalog.Application.Contracts;
 using ECommerce.Catalog.Application.Features.Products.Commands.DiscountPrice;
 using ECommerce.Catalog.Infrastructure.Extensions;
@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
-
+//RabbitMQ ile tokalaşmak için konfigürasyon API üzerinden yapılır.
 builder.Services.AddMassTransit(configurator =>
 {
     configurator.UsingRabbitMq((context, config) =>

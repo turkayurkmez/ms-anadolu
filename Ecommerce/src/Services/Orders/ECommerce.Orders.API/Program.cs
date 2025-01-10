@@ -1,3 +1,4 @@
+﻿using ECommerce.EventBus;
 using ECommerce.Orders.API.Consumers;
 using MassTransit;
 
@@ -11,6 +12,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMassTransit(configurator =>
 {
     configurator.AddConsumer<OrderProductPriceDiscountConsumer>();
+    configurator.AddConsumer<PaymentEventConsumer>();
+    configurator.AddConsumer<StockFailedConsumer>();   
+
     configurator.UsingRabbitMq((context, config) =>
     {
         config.Host("localhost", "/", h =>
@@ -19,10 +23,12 @@ builder.Services.AddMassTransit(configurator =>
             h.Password("guest");
         });
 
-        config.ReceiveEndpoint("order-price-discount-event", e =>
+        config.ReceiveEndpoint(EventQueues.OrderPriceDiscountQueue, e =>
         {
             e.ConfigureConsumer<OrderProductPriceDiscountConsumer>(context);
         });
+
+        config.ConfigureEndpoints(context);
 
     });
 });
@@ -38,29 +44,25 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/orderCreate", async (IPublishEndpoint publisher, OrderCreateRequest request) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    //db işlemlerinin yapıldığını varsayalım....
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+
+    var orderItems = request.OrderItems.Select(x => new OrderItem(x.ProductId, x.Quantity, x.Price)).ToList();
+    
+
+    var orderId = new Random().Next(1000, 9000);
+    var command = new OrderCreateadCommand(orderId, request.CustomerId, request.CreditCardInfo, orderItems);
+    var @event = new OrderCreatedEvent(command);
+
+    await publisher.Publish(@event);
+
+
+});
+
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public record OrderCreateRequest(string CustomerId, string CreditCardInfo, List<OrderItemInRequest> OrderItems);
+public record OrderItemInRequest(Guid ProductId, int Quantity, decimal Price);
