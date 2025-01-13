@@ -1,5 +1,7 @@
 ﻿using ECommerce.EventBus;
 using ECommerce.Orders.API.Consumers;
+using ECommerce.Orders.Infrastructure.Repositories;
+using EventStore.Client;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<EventStoreRepoository>();
+builder.Services.AddSingleton(new EventStoreClient(EventStoreClientSettings.Create("esdb://localhost:2113?tls=false")));
 
 builder.Services.AddMassTransit(configurator =>
 {
@@ -50,6 +55,8 @@ app.MapPost("/orderCreate", async (IPublishEndpoint publisher, OrderCreateReques
 
 
     var orderItems = request.OrderItems.Select(x => new OrderItem(x.ProductId, x.Quantity, x.Price)).ToList();
+
+
     
 
     var orderId = new Random().Next(1000, 9000);

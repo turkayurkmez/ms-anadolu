@@ -4,7 +4,7 @@ Olay analizi nasıl yapılır?
  1. Happy Path (Herşey yolunda :) )
  2. Olumsuz Senaryolar (Hata durumları)
 
- Happy Path:
+ Happy Path (Olumlu Senaryo):
  1. Sipariş Oluşturuldu olayı tetiklenir.
  2. Stock servisi bu olayı dinler ve stok denetimini yapar.
  3. Stok uygun olayı fırlar.

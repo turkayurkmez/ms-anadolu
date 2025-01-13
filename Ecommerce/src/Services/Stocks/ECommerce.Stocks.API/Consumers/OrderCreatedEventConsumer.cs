@@ -11,6 +11,7 @@ namespace ECommerce.Stocks.API.Consumers
             bool isStockAvailable = checkStock(command.OrderItems);
             if (isStockAvailable)
             {
+                //burada stok miktarı düşürme işlemi yapılacak (db'den)
                 var eventCommand = new StockAvailableCommand(command.OrderId,command.CustomerId, command.CreditCardInfo, command.OrderItems.Sum(x => x.Price * x.Quantity));
                 var @event = new StockAvailableEvent(eventCommand);
 
@@ -29,6 +30,10 @@ namespace ECommerce.Stocks.API.Consumers
 
         private bool checkStock(IEnumerable<OrderItem> orderItems)
         {
+            //foreach (var item in orderItems)
+            //{
+            //    item.
+            //}
             return new Random().Next(0, 10) > 5;
         }
     }

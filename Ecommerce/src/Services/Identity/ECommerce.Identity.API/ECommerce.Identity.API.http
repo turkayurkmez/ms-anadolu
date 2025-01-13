@@ -1,0 +1,27 @@
+@ECommerce.Identity.API_HostAddress = https://localhost:7048
+
+GET {{ECommerce.Identity.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+POST {{ECommerce.Identity.API_HostAddress}}/register
+Content-Type: application/json
+
+{
+  "Email":"a@test.com",
+  "Password":"Test@123",
+  "UserName":"test"
+}
+
+###
+
+POST {{ECommerce.Identity.API_HostAddress}}/login
+Content-Type: application/json
+
+{
+ "Email":"a@test.com",
+ "Password":"Test@123"
+}
+
+###
