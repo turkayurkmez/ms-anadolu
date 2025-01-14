@@ -1,5 +1,6 @@
 ﻿using ECommerce.Catalog.Domain.Aggregates;
 using ECommerce.Shared.Library.Domain;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -63,6 +64,10 @@ namespace ECommerce.Catalog.Infrastructure.Persistence
             modelBuilder.Entity<Category>().HasData(categories);
             modelBuilder.Entity<Product>().HasData(products);
 
+
+            //modelBuilder.AddInboxStateEntity();
+            //modelBuilder.AddOutboxMessageEntity();
+            //modelBuilder.AddOutboxStateEntity();
 
         }
     }

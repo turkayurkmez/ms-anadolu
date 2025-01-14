@@ -21,7 +21,7 @@ namespace ECommerce.Catalog.API
 
                 return Results.Ok(response);
 
-            }).RequireAuthorization();
+            });
 
             group.MapPut("/{id}/discount/{discount}", async (IMediator mediator, Guid productId, decimal discount) =>
             {

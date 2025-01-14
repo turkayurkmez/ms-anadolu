@@ -1,0 +1,26 @@
+
+Catalog:
+    https://localhost:7200
+    /products/{id}/discount/{discount} (PUT)
+    /products/{id} (GET)
+    /products (GET)
+
+Basket:
+   https://localhost:7201
+
+
+Order:
+     https://localhost:7202   
+    /orderCreate (POST)
+   
+
+Stock:
+   https://localhost:7203
+
+Payment:
+    https://localhost:7204
+
+
+Identity:
+   https://localhost:7205
+

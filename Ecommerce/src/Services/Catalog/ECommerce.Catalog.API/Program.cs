@@ -40,12 +40,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+connectionString = connectionString.Replace("[PASS]", builder.Configuration.GetSection("DefaultPassword").Value).Replace("[HOST]", builder.Configuration.GetSection("DefaultHostName").Value);
+
 //RabbitMQ ile tokalaşmak için konfigürasyon API üzerinden yapılır.
 builder.Services.AddMassTransit(configurator =>
 {
+
+    //configurator.AddEntityFrameworkOutbox<CatalogDbContext>(o =>
+    //{
+    //    o.QueryDelay = TimeSpan.FromSeconds(1);
+    //    o.UseSqlServer();
+    //    o.UseBusOutbox();
+    //});
     configurator.UsingRabbitMq((context, config) =>
     {
-        config.Host("localhost", "/", h =>
+        config.Host("rabbit-mq", "/", h =>
         {
             h.Username("guest");
             h.Password("guest");
@@ -59,6 +69,8 @@ builder.Services.AddMassTransit(configurator =>
 });
 
 var app = builder.Build();
+
+app.Logger.LogWarning($"Bağlantı adresi: {connectionString}");
 
 
 

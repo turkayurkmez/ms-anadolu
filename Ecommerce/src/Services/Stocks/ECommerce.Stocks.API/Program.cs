@@ -14,7 +14,7 @@ builder.Services.AddMassTransit(configurator =>
     configurator.AddConsumer<OrderCreatedEventConsumer>();
     configurator.UsingRabbitMq((context, config) =>
     {
-        config.Host("localhost", "/", h =>
+        config.Host("rabbit-mq", "/", h =>
         {
             h.Username("guest");
             h.Password("guest");

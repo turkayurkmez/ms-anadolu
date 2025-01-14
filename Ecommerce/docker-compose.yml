@@ -1,0 +1,98 @@
+services:
+
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+  
+    container_name: ms-sql-server
+    ports:
+      - "1433:1433" 
+    environment:
+      SA_PASSWORD: "Pa$$W0rd_1"
+      ACCEPT_EULA: "Y"      
+    healthcheck:
+        test: ["CMD", "sqlcmd", "-U", "sa", "-P", "Pa$$W0rd_1", "-Q", "SELECT 1"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+
+  rabbit-mq:
+    image: rabbitmq:3.10-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    container_name: rabbit-mq    
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    
+  
+  ecommerce.catalog.api:
+    image: ${DOCKER_REGISTRY-}ecommercecatalogapi
+    build:
+      context: .
+      dockerfile: src/Services/Catalog/ECommerce.Catalog.API/Dockerfile
+    environment:
+       DefaultHostName: "ms-sql-server"
+       DefaultPassword: "Pa$$W0rd_1"
+    depends_on:
+      - ms-sql-server
+      - rabbit-mq
+
+  ecommerce.basket.api:
+    image: ${DOCKER_REGISTRY-}ecommercebasketapi
+    build:
+      context: .
+      dockerfile: src/Services/Basket/ECommerce.Basket.API/Dockerfile
+    depends_on:       
+      - rabbit-mq
+
+
+  ecommerce.identity.api:
+    image: ${DOCKER_REGISTRY-}ecommerceidentityapi
+    build:
+      context: .
+      dockerfile: src/Services/Identity/ECommerce.Identity.API/Dockerfile
+    depends_on:
+      - rabbit-mq
+      - ms-sql-server 
+
+
+  ecommerce.orders.api:
+    image: ${DOCKER_REGISTRY-}ecommerceordersapi
+    build:
+      context: .
+      dockerfile: src/Services/Orders/ECommerce.Orders.API/Dockerfile
+    depends_on:
+     - rabbit-mq
+     
+
+
+  ecommerce.payment.api:
+    image: ${DOCKER_REGISTRY-}ecommercepaymentapi
+    build:
+      context: .
+      dockerfile: src/Services/Payment/ECommerce.Payment.API/Dockerfile
+    depends_on:
+     - rabbit-mq
+
+
+  ecommerce.stocks.api:
+    image: ${DOCKER_REGISTRY-}ecommercestocksapi
+    build:
+      context: .
+      dockerfile: src/Services/Stocks/ECommerce.Stocks.API/Dockerfile
+    depends_on:
+     - rabbit-mq
+
+
+  ecommerce.apigateway.yarp:
+    image: ${DOCKER_REGISTRY-}ecommerceapigatewayyarp
+    build:
+      context: .
+      dockerfile: src/ApiGateway/ECommerce.ApiGateway.YARP/Dockerfile
+    depends_on:
+     - rabbit-mq 
+     - ms-sql-server   
+

@@ -55,7 +55,21 @@ namespace ECommerce.Catalog.Infrastructure.Repositories
 
         public async Task UpdateAsync(Product entity)
         {
-            catalogDbContext.Products.Update(entity);
+
+
+            //await using var transaction = await catalogDbContext.Database.BeginTransactionAsync();
+            try
+            {
+                catalogDbContext.Products.Update(entity);
+                //    await catalogDbContext.SaveChangesAsync();
+                //  await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                //await transaction.RollbackAsync();
+                throw;
+            }
+
             await catalogDbContext.SaveChangesAsync();
 
         }

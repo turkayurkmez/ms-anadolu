@@ -1,0 +1,6 @@
+@ECommerce.ApiGateway.YARP_HostAddress = http://localhost:5162
+
+GET {{ECommerce.ApiGateway.YARP_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

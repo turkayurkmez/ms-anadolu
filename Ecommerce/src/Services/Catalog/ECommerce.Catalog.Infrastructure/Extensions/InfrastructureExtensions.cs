@@ -17,7 +17,14 @@ namespace ECommerce.Catalog.Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            var host = configuration.GetSection("DefaultHostName").Value;
+            var pass = configuration.GetSection("DefaultPassword").Value;
+
+
+
+
             var connectionString = configuration.GetConnectionString("DefaultConnection");
+            connectionString = connectionString.Replace("[PASS]", pass).Replace("[HOST]", host);
             services.AddDbContext<CatalogDbContext>(options =>
                 options.UseSqlServer(connectionString, b=>b.MigrationsAssembly(typeof(CatalogDbContext).Assembly.FullName)) );
             services.AddScoped<IProductRepository, ProductRepository>();
